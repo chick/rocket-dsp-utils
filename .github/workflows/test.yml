@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: ucbbar/chisel3-tools
-      options: --entrypoint /bin/bash
+      options: --user github --entrypoint /bin/bash
     env:
       CONTAINER_HOME: /home/github
 
@@ -23,6 +23,20 @@ jobs:
         uses: olafurpg/setup-scala@v10
       - name: Cache
         uses: coursier/cache-action@v5
+      - name: Setup Hardfloat
+        uses: actions/checkout@v2
+        with:
+          repository: ucb-bar/berkeley-hardfloat.git
+      - name: Setup chipsalliance-api-config
+        uses: actions/checkout@v2
+        with:
+          repository: chipsalliance/api-config-chipsalliance.git
+      - name: Setup rocket-chip
+        uses: actions/checkout@v2
+        with:
+          repository: chipsalliance/rocket-chip.git
+      - name: show location
+        run: pwd && ls -ltr
       - name: Documentation
         id: doc
         run: sbt doc
